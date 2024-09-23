@@ -1,7 +1,7 @@
 function Footer() {
     return(
         <footer>
-            <p>© 2022 My Website. All rights reserved.</p>
+           
             <nav>
                 <ul>
                     <li><a href="#">About</a></li>
@@ -12,6 +12,7 @@ function Footer() {
                 <a href="#"><img src="https://www.iconfinder.com/data/icons/logos-and-brands/512/twitter-logo-512.png" alt="Twitter" /></a>
                 <a href="#"><img src="https://www.iconfinder.com/data/icons/logos-and-brands/512/facebook-logo-512.png" alt="Facebook" /></a>
               </div>
+              <p>© 2022 My Website. All rights reserved.</p>
         </footer>
     )
 }
