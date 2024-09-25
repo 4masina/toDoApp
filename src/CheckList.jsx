@@ -12,6 +12,7 @@ const CheckListItem = ({ id, label, text, completed, handleUserClick, handleDele
     );
 
 
+    
  const checkListComponents = checkListComponents.map((item) => (
     <CheckListItem
         key={item.id}

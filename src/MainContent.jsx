@@ -34,7 +34,11 @@ const addNewItem = (e) => {
         setCheckedItems([...checkedItems, newToDoItem]);
         setNewItem("");
     }
-};
+    const handleEdit = (id) => {
+        const editItem = checkedItems.find((item) => item.id === id)
+        editItem.text = updateItem;
+        const tempArray = [...checkedItems].map((item) => item.id === id? editItem : item);
+}
 const handleDeleteItem = (id) => {
     const updatedItems = checkedItems.filter((item) => item.id!== id);
     setCheckedItems(updatedItems);
