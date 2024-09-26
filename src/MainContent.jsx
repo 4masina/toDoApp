@@ -1,48 +1,89 @@
-import React, {useState} from "react";
-import CheckListItem from "./CheckList";
+import React, { useState } from 'react'
+import ChecklistItem from './ChecklistItem'
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
 
-const Content = () => {
-    let toDoList = [
-        {id:1, label: "Work", text: "Work",  Completed: true  },
-        {id:2, label: "Read a Book", text: "Read a book", completed: true },
-        {id:3, label: "GoToGym", text: "Go To Gym", completed:  false},
-    ];
-    const [checkedItems, setCheckedItems] = useState(toDoList);
-    
-    const handleUserClick = (e) => {
-        const newCheckedItems = [...checkedItems];
-        newCheckedItems[e.target.id].completed =!newCheckedItems[e.target.id].completed;
-        setCheckedItems(newCheckedItems);  
-        console.log(newCheckedItems);   
-    };
-    const mappingToDoList = checkedItems.map(({ label, id, text, completed }) => (
-        <CheckListItem  label={label} id={id} text={text} checked={completed} />
-    ));
-    return <>{mappingToDoList}</>   
-};
-
-const handleInputChange = (e) => {
-    setNewItem(e.target.value);
-};
-const addNewItem = (e) => {
-    if (setNewItem.trim()) {
-        const newToDoItem = {
-            id: CheckListItem.length + 1,
-            text: setItemText,  
-            completed: false,
-        };
-        setCheckedItems([...checkedItems, newToDoItem]);
-        setNewItem("");
+const MainContent = () => {
+  let toDoList = []
+  const [checked, setChecked] = useState(toDoList)
+  const [inputValue, setInputValue] = useState('')
+  const [updatedValue, setUpdateValue] = useState('')
+  const [isEditClicked, setIsEditClicked] = useState(false)
+  const [editInputValue, setEditInputValue] = useState('')
+  const [editItemId, setEditItemId] = useState(null)
+  const handleUserClick = (e) => {
+    const tempArray = [...checked].map((item) =>
+      item.id === e.target.id ? { ...item, completed: !item.completed } : item
+    )
+    setChecked(tempArray)
+    console.log(checked)
+  }
+  const handleAddItem = () => {
+    const newItem = {
+      id: checked.length + 1,
+      text: inputValue,
+      htmlFor: inputValue,
+      type: 'checkbox',
+      name: inputValue,
     }
-    const handleEdit = (id) => {
-        const editItem = checkedItems.find((item) => item.id === id)
-        editItem.text = updateItem;
-        const tempArray = [...checkedItems].map((item) => item.id === id? editItem : item);
-    }
-    const handleDeleteItem = (id) => {
-        const updatedItems = checkedItems.filter((item) => item.id!== id);
-        setCheckedItems(updatedItems);
-    }
-};
-
- export default Content;
+    setChecked([...checked, newItem])
+    setInputValue('')
+  }
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value)
+  }
+  const handleEdit = (id) => {
+    const editItem = checked.find((item) => item.id === id)
+    editItem.text = editInputValue
+    const tempArray = [...checked].map((item) =>
+      item.id == id ? editItem : item
+    )
+    setChecked(tempArray)
+  }
+  const handleDelete = (id) => {
+    const updatedItems = checked.filter((item) => {
+      if (item.id !== id) return item
+    })
+    console.log(updatedItems)
+    setChecked(updatedItems)
+  }
+  const mappingToDoList = checked.map(
+    ({ text, completed, htmlFor, type, id, name }) => (
+      <ChecklistItem
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+        text={text}
+        htmlFor={htmlFor}
+        type={type}
+        key={id}
+        completed={completed}
+        id={id}
+        name={name}
+        handleUserClick={handleUserClick}
+        isEditClicked={isEditClicked}
+        setIsEditClicked={setIsEditClicked}
+        editInputValue={editInputValue}
+        setEditInputValue={setEditInputValue}
+        editItemId={editItemId}
+        setEditItemId={setEditItemId}
+      />
+    )
+  )
+  return (
+    <>
+      <TextField
+        type='text'
+        value={inputValue}
+        name='addToDo'
+        onChange={(e) => handleInputChange(e)}
+        variant='filled'
+      />
+      <Button onClick={() => handleAddItem()} variant='contained'>
+        + Add
+      </Button>
+      {mappingToDoList}
+    </>
+  )
+}
+export default MainContent
