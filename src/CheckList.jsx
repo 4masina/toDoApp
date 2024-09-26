@@ -1,18 +1,19 @@
 import React from "react";
 
-const CheckListItem = ({ id, label, text, completed, handleUserClick, handleDeleteItem }) => {
+const CheckListItem = ({ id, label, text, completed, handleUserClick, handleDeleteItem, handleEdit }) => {
     return (
         <div key={id}>
             <label htmlFor={label}>{text}</label>
             <input onChange = {(e) => handleUserClick(e)}
             type="checkbox" name={label} checked={completed} />
             <button onClick={() => handleDeleteItem(id)}>Delete</button>
+            <button onClick={() => handleEdit(id)}>Edit</button>
             
         </div>
     );
 
 
-    
+
  const checkListComponents = checkListComponents.map((item) => (
     <CheckListItem
         key={item.id}
@@ -22,6 +23,8 @@ const CheckListItem = ({ id, label, text, completed, handleUserClick, handleDele
         completed={item.completed}
         handleUserClick={handleUserClick}
         handleDeleteItem={handleDeleteItem}
+        handleEdit={handleEdit} 
+    
     />
  ));
  return (

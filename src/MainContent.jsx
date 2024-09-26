@@ -28,7 +28,7 @@ const addNewItem = (e) => {
     if (setNewItem.trim()) {
         const newToDoItem = {
             id: CheckListItem.length + 1,
-            text: setItemText,
+            text: setItemText,  
             completed: false,
         };
         setCheckedItems([...checkedItems, newToDoItem]);
@@ -38,10 +38,11 @@ const addNewItem = (e) => {
         const editItem = checkedItems.find((item) => item.id === id)
         editItem.text = updateItem;
         const tempArray = [...checkedItems].map((item) => item.id === id? editItem : item);
-}
-const handleDeleteItem = (id) => {
-    const updatedItems = checkedItems.filter((item) => item.id!== id);
-    setCheckedItems(updatedItems);
-}
+    }
+    const handleDeleteItem = (id) => {
+        const updatedItems = checkedItems.filter((item) => item.id!== id);
+        setCheckedItems(updatedItems);
+    }
+};
 
-export default Content;
+ export default Content;
