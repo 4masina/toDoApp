@@ -1,12 +1,12 @@
 function Header() {
     return (
         <header>
-            <h1>My Website</h1>
+            <h1>NoItULove</h1>
             <nav>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Mind</a></li>
+                    <li><a href="#">Body</a></li>
+                    <li><a href="#">Spirit</a></li>
                 </ul>
             </nav>
         </header>
