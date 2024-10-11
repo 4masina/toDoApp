@@ -12,54 +12,115 @@ const MainContent = () => {
   const [isEditClicked, setIsEditClicked] = useState(false)
   const [editInputValue, setEditInputValue] = useState('')
   const [editItemId, setEditItemId] = useState(null)
-  const handleUserClick = (e) => {
-    const tempArray = [...checked].map((item) =>
-      item.id === e.target.id ? { ...item, completed: !item.completed } : item
-    )
-    setChecked(tempArray)
-    console.log(checked)
-  }
-  const handleAddItem = () => {
-    const newItem = {
-      id: checked.length + 1,
-      text: inputValue,
-      htmlFor: inputValue,
-      type: 'checkbox',
-      name: inputValue,
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/todos`); // Adjust backend URL accordingly
+        const data = await response.json();
+        setChecked(data.todos); // Update state with fetched todos
+      } catch (error) {
+        console.error("Failed to fetch todos:", error);
+      }
+    };
+    fetchTodos();
+  }, []);
+  const handleUserClick = async (id) => {
+    console.log("Checkbox clicked with id:", id);
+    const todoToUpdate = checked.find((item) => item._id === id); // Find the todo to update
+    console.log("todoToUpdate", todoToUpdate);
+    const updatedTodo = { ...todoToUpdate, completed: !todoToUpdate.completed };
+
+    try {
+      const response = await fetch(`${apiUrl}/edit-item/${id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          task: updatedTodo.text,
+          completed: updatedTodo.completed,
+        }),
+      });
+  const updatedData = await response.json();
+      console.log("Updated Todo:", updatedData);
+
+      setChecked((prev) =>
+        prev.map((item) => (item._id === id ? updatedData : item))
+      );
+    } catch (error) {
+      console.error("Failed to update todo:", error);
     }
-    setChecked([...checked, newItem])
-    setInputValue('')
-  }
+  };
+  const handleAddItem = async () => {
+    if (!inputValue.trim()) return; // Prevent empty inputs
+    const newItem = {
+      text: inputValue,
+    };
+
+    try {
+      const response = await fetch(
+        `${apiUrl}/add-item`, //todo-app-backend-0iqe.onrender.com/add-item",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newItem),
+        }
+      ); // Adjust backend URL accordingly
+      const createdItem = await response.json();
+      console.log("Created Item", createdItem);
+      setChecked([...checked, createdItem]); // Update state with fetched todos
+    } catch (error) {
+      console.error("Failed to fetch todos:", error);
+    }
+    setInputValue(""); // Clear input field after adding
+  };
   const handleInputChange = (e) => {
     setInputValue(e.target.value)
   }
-  const handleEdit = (id) => {
-    const editItem = checked.find((item) => item.id === id)
-    editItem.text = editInputValue
-    const tempArray = [...checked].map((item) =>
-      item.id == id ? editItem : item
-    )
-    setChecked(tempArray)
-  }
-  const handleDelete = (id) => {
-    const updatedItems = checked.filter((item) => {
-      if (item.id !== id) return item
-    })
-    console.log(updatedItems)
-    setChecked(updatedItems)
-  }
+  const handleEdit = async (id) => {
+    let newItem = { ...checked.find((item) => item._id === id) };
+    newItem.text === editInputValue;
+    console.log("NewItem", newItem);
+    try {
+      const response = await fetch(`${apiUrl}/edit-item/${id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: editInputValue,
+          completed: newItem.completed,
+        }),
+      }); // Adjust backend URL accordingly
+      const updatedTodo = await response.json();
+      console.log("Updated Todo", updatedTodo);
+      setChecked((prev) =>
+        prev.map(
+          (item) => (item._id === id ? updatedTodo : item) // Update the state with the modified todo
+        )
+      );
+    } catch (error) {
+      console.error("Failed to fetch todos:", error);
+    }
+    setIsEditClicked(false); // Close edit mode after editing
+  };
+  const handleDelete = async (id) => {
+    setChecked((prev) => prev.filter((item) => item._id !== id));
+    try {
+      await fetch(`${apiUrl}/delete-item/${id}`, {
+        method: "DELETE",
+      }); // Adjust backend URL accordingly
+      //const data = await response.json();
+      //setChecked(data.todos); // Update state with fetched todos
+    } catch (error) {
+      console.error("Failed to fetch todos:", error);
+    }
+  };
   const mappingToDoList = checked.map(
-    ({ text, completed, htmlFor, type, id, name }) => (
+    ({ text, completed, _id, }) => (
       <ChecklistItem
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         text={text}
-        htmlFor={htmlFor}
-        type={type}
-        key={id}
+        key={_id}
         completed={completed}
-        id={id}
-        name={name}
+        _id={_id}
         handleUserClick={handleUserClick}
         isEditClicked={isEditClicked}
         setIsEditClicked={setIsEditClicked}
