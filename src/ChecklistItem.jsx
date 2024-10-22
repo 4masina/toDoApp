@@ -42,7 +42,7 @@ const ChecklistItem = ({
           onClick={() => {
             setIsEditClicked(!isEditClicked)
             setEditInputValue(text)
-            setEditItemId(id)
+            setEditItemId(_id)
           }}
           id={`${_id}`}
         >

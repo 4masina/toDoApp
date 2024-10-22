@@ -4,9 +4,10 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 
-const apiUrl =import.meta.env.VITE_API_URL || 'https://todoappbackend-4udy.onrender.com' // Replace with your backend API URL 
+
 
 const MainContent = () => {
+  const apiUrl =import.meta.env.VITE_API_URL || 'https://todoappbackend-4udy.onrender.com' // Replace with your backend API URL 
   let toDoList = []
   const [checked, setChecked] = useState(toDoList)
   const [inputValue, setInputValue] = useState('')
