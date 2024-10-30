@@ -1,6 +1,9 @@
+import "./index.css";
+
+
 function Header() {
     return (
-        <header>
+        <header className="navbar">
             <h1>NoItULove</h1>
             <nav>
                 <ul>

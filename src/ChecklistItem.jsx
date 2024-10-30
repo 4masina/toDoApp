@@ -3,6 +3,7 @@ import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
+import './index.css'
 
 const ChecklistItem = ({
   editInputValue,
@@ -29,15 +30,18 @@ const ChecklistItem = ({
                 checked={completed}
                 type={'checkbox'}
                 id={`${_id}`}
+                className='box'
               />
             }
             label={text}
             htmlFor={_id}
+            className='todoitem'
           />
           <Button
             variant='outlined'
             onClick={() => handleDelete(_id)}
             id={`${_id}`}
+            className='delete'
           >
             Delete
           </Button>
@@ -49,6 +53,7 @@ const ChecklistItem = ({
               setEditItemId(_id)
             }}
             id={`${_id}`}
+            className='edit'
           >
             Edit
           </Button>
